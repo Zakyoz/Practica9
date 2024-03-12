@@ -40,10 +40,17 @@ app.get('/productos/:id', (req, res) => {
   })
 })
 
-app.get('/productos/categorias/:cat', (req, res) => {
-  axios.get(URL + `categorias/`)
+app.get('/productos/categoria/:cat', (req, res) => {
+  axios.get(URL + `productos/categoria/${req.params.cat}`)
     .then(response => {
-      res.status(200).json(response.data)
+      let lista_cat=[]
+      response.data.map(item=>{
+        const nuevo = item
+        nuevo.proveedor= "Marco Ortaz"
+        nuevo.costo=parseInt(item.costo)*1.8
+        lista_cat.push(nuevo)
+      })
+        res.status(200).json(lista_cat)   
     })
     .catch(error => {
       res.status(error.response.status).json(error.response.data)
